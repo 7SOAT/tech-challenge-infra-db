@@ -1,9 +1,10 @@
-output "db_endpoint" {
-  description = "RDS PostgreSQL endpoint"
-  value       = aws_db_instance.postgres.endpoint
+output "rds_endpoint" {
+  value       = module.rds.rds_endpoint
+  description = "The endpoint of the RDS instance"
+  sensitive   = true
 }
 
-output "db_instance_id" {
-  description = "ID of the RDS instance"
-  value       = aws_db_instance.postgres.id
+output "rds_instance_id" {
+  value       = module.rds.rds_instance_id
+  description = "The ID of the RDS instance"
 }

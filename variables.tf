@@ -1,39 +1,52 @@
+variable "db_identifier" {
+  description = "The identifier for the RDS instance"
+  type        = string
+  default     = "my-db-instance"
+}
+
+variable "db_name" {
+  description = "The name of the initial database to create"
+  type        = string
+  default     = "my_database"
+}
+
+variable "db_username" {
+  description = "The master username for the database"
+  type        = string
+  default     = "admin"
+}
+
+variable "db_password" {
+  description = "The master password for the database"
+  type        = string
+  sensitive   = true
+  default     = "securepassword123"
+}
+
+variable "vpc_security_group_ids" {
+  description = "A list of VPC security group IDs to associate with the RDS instance"
+  type        = list(string)
+}
+
+variable "db_subnet_group_name" {
+  description = "The name of the DB subnet group"
+  type        = string
+}
+
 variable "aws_region" {
-  description = "AWS region to deploy resources"
+  description = "The AWS region to deploy resources into"
   type        = string
   default     = "us-east-1"
 }
 
-variable "db_name" {
-  description = "Name of the PostgreSQL database"
-  type        = string
-  default     = "tech_challenge_db"
-}
-
-variable "db_username" {
-  description = "PostgreSQL admin username"
-  type        = string
-}
-
-variable "db_password" {
-  description = "PostgreSQL admin password"
-  type        = string
-  sensitive   = true
-}
-
-variable "db_instance_class" {
-  description = "RDS instance class"
+variable "instance_class" {
+  description = "The class of the RDS instance"
   type        = string
   default     = "db.t3.micro"
 }
 
-variable "db_allocated_storage" {
-  description = "The size of the storage in gigabytes"
+variable "allocated_storage" {
+  description = "The amount of allocated storage in GB"
   type        = number
   default     = 20
-}
-
-variable "vpc_id" {
-  description = "The ID of the VPC where the RDS instance will be deployed"
-  type        = string
 }

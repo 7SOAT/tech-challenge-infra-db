@@ -1,39 +1,38 @@
-resource "aws_db_instance" "postgres" {
-  engine            = "postgres"
-  instance_class    = var.db_instance_class
-  allocated_storage = var.db_allocated_storage
-  db_name           = var.db_name
-  username          = var.db_username
-  password          = var.db_password
-  parameter_group_name = "default.postgres13"
-  skip_final_snapshot = true
-  publicly_accessible = false
-
-  # Security group
-  vpc_security_group_ids = [aws_security_group.db_sg.id]
-
-  lifecycle {
-    prevent_destroy = true
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.0"
+    }
   }
+  required_version = ">= 1.3.0"
 }
 
-# Security group to allow connections to the RDS
-resource "aws_security_group" "db_sg" {
-  name        = "db_security_group"
-  description = "Allow PostgreSQL access"
-  vpc_id      = var.vpc_id  # Defina seu VPC ID
+provider "aws" {
+  region = var.aws_region
+}
 
-  ingress {
-    from_port   = 5432
-    to_port     = 5432
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Ajuste para limitar o acesso, por exemplo: ["your_ip/32"]
-  }
+# Calling the RDS module
+module "rds" {
+  source                = "./modules/rds"
+  db_identifier         = var.db_identifier
+  db_name               = var.db_name
+  db_username           = var.db_username
+  db_password           = var.db_password
+  vpc_security_group_ids = var.vpc_security_group_ids
+  db_subnet_group_name  = var.db_subnet_group_name
+  instance_class        = var.instance_class
+  allocated_storage     = var.allocated_storage
+}
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+# Sensitive outputs to avoid exposing passwords
+output "rds_endpoint" {
+  value       = module.rds.rds_endpoint
+  description = "RDS endpoint for the created instance"
+  sensitive   = true
+}
+
+output "rds_instance_id" {
+  value       = module.rds.rds_instance_id
+  description = "RDS instance ID for the created instance"
 }

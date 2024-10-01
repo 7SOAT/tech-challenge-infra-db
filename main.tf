@@ -24,15 +24,3 @@ module "rds" {
   instance_class        = var.instance_class
   allocated_storage     = var.allocated_storage
 }
-
-# Sensitive outputs to avoid exposing passwords
-output "rds_endpoint" {
-  value       = module.rds.rds_endpoint
-  description = "RDS endpoint for the created instance"
-  sensitive   = true
-}
-
-output "rds_instance_id" {
-  value       = module.rds.rds_instance_id
-  description = "RDS instance ID for the created instance"
-}

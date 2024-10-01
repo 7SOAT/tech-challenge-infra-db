@@ -8,21 +8,11 @@ resource "aws_db_instance" "rds_instance" {
   instance_class         = var.instance_class
   allocated_storage      = var.allocated_storage
   engine                 = "postgres"
-  engine_version         = "13.7"
+  engine_version         = "11"
   skip_final_snapshot    = true
   publicly_accessible    = false
 
   # Improved lifecycle management
-  deletion_protection = true  # Helps prevent accidental deletion
+  deletion_protection = false  # Helps prevent accidental deletion
   backup_retention_period = 7
-}
-
-# Improved outputs
-output "rds_endpoint" {
-  value = aws_db_instance.rds_instance.endpoint
-  sensitive = true
-}
-
-output "rds_instance_id" {
-  value = aws_db_instance.rds_instance.id
 }

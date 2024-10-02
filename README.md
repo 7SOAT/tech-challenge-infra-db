@@ -41,3 +41,11 @@ npm install -g dotenv-cli
 dotenv -e .env -- terraform apply
 ```
 <p>A partir disto o Actions irá prosseguir com a execução.</p>
+
+<p align="justify">
+  Doc:
+</p>
+
+<p>
+  https://docs.google.com/document/d/1CTABhCGxGN-Seq4w4bpaZjCdSbdDtCJi2NDsTtRMtJQ/edit?usp=sharing
+</p>

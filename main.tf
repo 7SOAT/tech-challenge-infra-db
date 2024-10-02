@@ -2,25 +2,18 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.0"
+      version = "~> 5.0"
     }
   }
-  required_version = ">= 1.3.0"
+
+  backend "s3" {
+    bucket         = "afluga-kubernetes-terraform-backend"
+    key            = "env/dev/db/terraform.tfstate"
+    region         = "us-east-1"      
+    encrypt        = true
+  }
 }
 
 provider "aws" {
-  region = var.aws_region
-}
-
-# Calling the RDS module
-module "rds" {
-  source                = "./modules/rds"
-  db_identifier         = var.db_identifier
-  db_name               = var.db_name
-  db_username           = var.db_username
-  db_password           = var.db_password
-  vpc_security_group_ids = var.vpc_security_group_ids
-  db_subnet_group_name  = var.db_subnet_group_name
-  instance_class        = var.instance_class
-  allocated_storage     = var.allocated_storage
+  region = "us-east-1"
 }
